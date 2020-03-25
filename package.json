@@ -2,6 +2,7 @@
   "name": "values",
   "version": "1.0.0",
   "private": false,
+  "license": "WTFPL",
   "homepage": "https://nzchicken.github.io/values",
   "author": "Ben Naylor",
   "dependencies": {
