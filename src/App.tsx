@@ -1,64 +1,42 @@
 import React, { useState, useEffect } from 'react';
 import _ from 'lodash'
-import {
-  Avatar,
-  Container,
-  Card,
-  CardContent,
-  CardActionArea,
-  Chip,
-  Grid,
-  Typography,
-  TableContainer,
-  Table,
-  TableHead,
-  TableBody,
-  TableRow,
-  TableCell,
-  Paper,
-} from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
+import Avatar from '@mui/material/Avatar';
+import Container from '@mui/material/Container';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import CardActionArea from '@mui/material/CardActionArea';
+import Chip from '@mui/material/Chip';
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
+import TableContainer from '@mui/material/TableContainer';
+import Table from '@mui/material/Table';
+import TableHead from '@mui/material/TableHead';
+import TableBody from '@mui/material/TableBody';
+import TableRow from '@mui/material/TableRow';
+import TableCell from '@mui/material/TableCell';
+import Paper from '@mui/material/Paper';
 
 import valuesList from'./values.json'
 
 import { EloOutcome, calculateNewRatings } from './elo'
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    flexGrow: 1,
-  },
-  container: {
-    marginTop: 20,
-    alignItems: 'center',
-  },
-  indicator: {
-    margin: '2em 1em 2em 0em',
-  },
-  card: {
-    textAlign: 'center',
-    display: 'flex',
-    backgroundColor: theme.palette.primary.dark,
-    color: 'white',
-  },
-  option: {
-    height: 120,
-    backgroundColor: theme.palette.primary.main,
-    color: 'black',
-  },
-}))
-
 interface ValueProps {
   outcome: EloOutcome
-  className?: string
   onClick: (outcome: EloOutcome) => void
   children: React.ReactNode
+  sx?: any
 }
 
-const Value: React.FC<ValueProps> = ({ outcome, className, onClick, children }) => {
-  const classes = useStyles();
-
+const Value: React.FC<ValueProps> = ({ outcome, onClick, children, sx }) => {
   return (
-    <Card className={`${classes.card} ${className || ''}`}>
+    <Card 
+      sx={{
+        ...sx,
+        textAlign: 'center',
+        display: 'flex',
+        backgroundColor: 'primary.dark',
+        color: 'white',
+      }}>
       <CardActionArea onClick={() => onClick(outcome)}>
         <CardContent>
           {children}
@@ -88,7 +66,6 @@ interface Val {
 }
 
 const App = () => {
-  const classes = useStyles();
   const [ isCollecting, setIsCollecting ] = useState(true);
   const [ values, setValues ] = useState<Array<Val>>(valuesList.map(name => ({ name, score: 1000, matches: 0 })));
 
@@ -96,7 +73,7 @@ const App = () => {
 
   useEffect(() => {
     setPlayers(getNewPlayers(values));
-  }, [])
+  }, [values])
 
   useEffect(() => {
   }, [ values ]);
@@ -131,14 +108,28 @@ const App = () => {
     <Container maxWidth="md">
       {
         isCollecting && 
-        <Grid container justify="center" spacing={3} className={classes.container}>
+        <Grid container spacing={3}
+          sx={{
+            marginTop: 1,
+            alignItems: 'center'
+          }}>
           <Grid item xs={12} sm={6}>
-            <Value outcome={EloOutcome.CHALLENGER} onClick={handleClick} className={classes.option}>
+            <Value outcome={EloOutcome.CHALLENGER} onClick={handleClick}
+              sx={{
+                height: 120,
+                backgroundColor: 'primary.main',
+                color: 'black',
+              }}>
               <Typography variant="h4">{players[0]}</Typography>
             </Value>
           </Grid>
           <Grid item xs={12} sm={6}>
-            <Value outcome={EloOutcome.OPPONENT} onClick={handleClick} className={classes.option}>
+            <Value outcome={EloOutcome.OPPONENT} onClick={handleClick}
+              sx={{
+                height: 120,
+                backgroundColor: 'primary.main',
+                color: 'black',
+              }}>
               <Typography variant="h4">{players[1]}</Typography>
             </Value>
           </Grid>
@@ -150,13 +141,12 @@ const App = () => {
         </Grid>
       }
       <Chip
-        className={classes.indicator}
+        sx={{margin: '2em 1em 2em 0em'}}
         label="no matches"
         color='secondary'
         avatar={<Avatar>{values.filter(v => v.matches === 0).length}</Avatar>}
       />
       <Chip
-        className={classes.indicator}
         label="completed"
         color='secondary'
         avatar={<Avatar>{values.filter(v => v.matches === maxMatches).length}</Avatar>}
