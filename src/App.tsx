@@ -31,11 +31,11 @@ const Value: React.FC<ValueProps> = ({ outcome, onClick, children, sx }) => {
   return (
     <Card 
       sx={{
-        ...sx,
         textAlign: 'center',
         display: 'flex',
         backgroundColor: 'primary.dark',
         color: 'white',
+        ...sx,
       }}>
       <CardActionArea onClick={() => onClick(outcome)}>
         <CardContent>
