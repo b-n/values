@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": false,
   "license": "WTFPL",
-  "homepage": "https://nzchicken.github.io/values",
+  "homepage": "https://b-n.github.io/values",
   "author": "Ben Naylor",
   "dependencies": {
     "@emotion/react": "^11.14.0",
